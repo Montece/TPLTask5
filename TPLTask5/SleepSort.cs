@@ -52,6 +52,7 @@ internal sealed class SleepSort
             if (singleStringObject is not string singleString)
             {
                 _logger.Write("Input sort data is not string!");
+
                 return;
             }
 
