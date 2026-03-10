@@ -1,4 +1,4 @@
-﻿using TPLTask.Logging;
+﻿using TPLTask4;
 
 namespace TPLTask5;
 
@@ -7,18 +7,18 @@ internal sealed class SleepSort
     private const int MAX_ELEMENTS_COUNT = 100;
     private const int TIME_PROPORTIONALITY_COEFFICIENT = 100;
 
-    private readonly ILogger _logger;
-    private readonly TextWriter _output;
+    private readonly Action<string> _logMethod;
+    private readonly Catalog _catalog;
 
-    private readonly Lock _outputLock = new();
+    private readonly Lock _catalogLock = new();
 
-    internal SleepSort(ILogger logger, TextWriter output)
+    internal SleepSort(Action<string> logMethod, Catalog catalog)
     {
-        ArgumentNullException.ThrowIfNull(logger, nameof(logger));
-        ArgumentNullException.ThrowIfNull(output, nameof(output));
+        ArgumentNullException.ThrowIfNull(logMethod, nameof(logMethod));
+        ArgumentNullException.ThrowIfNull(catalog, nameof(catalog));
 
-        _logger = logger;
-        _output = output;
+        _logMethod = logMethod;
+        _catalog = catalog;
     }
 
     internal void Do(string[] allStrings)
@@ -43,6 +43,11 @@ internal sealed class SleepSort
         {
             thread.Join();
         }
+
+        lock (_catalogLock)
+        {
+            _catalog.Show();
+        }
     }
 
     private void ThreadSort(object? singleStringObject)
@@ -51,22 +56,21 @@ internal sealed class SleepSort
         {
             if (singleStringObject is not string singleString)
             {
-                _logger.Write("Input sort data is not string!");
+                _logMethod("Input sort data is not string!");
 
                 return;
             }
 
             Thread.Sleep(singleString.Length * TIME_PROPORTIONALITY_COEFFICIENT);
 
-            lock (_outputLock)
+            lock (_catalogLock)
             {
-                _output.WriteLine(singleString);
-                _output.Flush();
+                _catalog.AddToTail(singleString);
             }
         }
         catch (Exception ex)
         {
-            _logger.Write($"Error while sorting! {ex}");
+            _logMethod($"Error while sorting! {ex}");
         }
     }
 }

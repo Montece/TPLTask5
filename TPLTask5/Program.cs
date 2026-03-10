@@ -1,4 +1,4 @@
-﻿using TPLTask.Logging.Loggers;
+﻿using TPLTask4;
 using TPLTask5;
 
 Console.Title = "TPLTask 5";
@@ -9,7 +9,8 @@ if (args.Length == 0)
 }
 else
 {
-    var sleepSort = new SleepSort(new ConsoleLogger(), Console.Out);
+    using var catalog = new Catalog(Console.WriteLine);
+    var sleepSort = new SleepSort(Console.WriteLine, catalog);
 
     sleepSort.Do(args);
 }

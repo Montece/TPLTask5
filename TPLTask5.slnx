@@ -1,5 +1,6 @@
 <Solution>
-  <Project Path="TPLTask.Logging/TPLTask.Logging.csproj" />
+  <Project Path="TPLTask4.Tests/TPLTask4.Tests.csproj" />
+  <Project Path="TPLTask4/TPLTask4.csproj" />
   <Project Path="TPLTask5.Tests/TPLTask5.Tests.csproj" />
   <Project Path="TPLTask5/TPLTask5.csproj" />
 </Solution>
