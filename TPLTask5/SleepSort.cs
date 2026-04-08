@@ -10,8 +10,6 @@ internal sealed class SleepSort
     private readonly Action<string> _logMethod;
     private readonly Catalog _catalog;
 
-    private readonly Lock _catalogLock = new();
-
     internal SleepSort(Action<string> logMethod, Catalog catalog)
     {
         ArgumentNullException.ThrowIfNull(logMethod, nameof(logMethod));
@@ -44,10 +42,7 @@ internal sealed class SleepSort
             thread.Join();
         }
 
-        lock (_catalogLock)
-        {
-            _catalog.Show();
-        }
+        _catalog.Show();
     }
 
     private void ThreadSort(object? singleStringObject)
@@ -63,10 +58,7 @@ internal sealed class SleepSort
 
             Thread.Sleep(singleString.Length * TIME_PROPORTIONALITY_COEFFICIENT);
 
-            lock (_catalogLock)
-            {
-                _catalog.AddToTail(singleString);
-            }
+            _catalog.AddToTail(singleString);
         }
         catch (Exception ex)
         {
