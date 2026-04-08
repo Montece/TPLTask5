@@ -3,17 +3,25 @@ using TPLTask5;
 
 Console.Title = "TPLTask 5";
 
-if (args.Length == 0)
-{
-    Console.WriteLine("Use args as a strings' array!");
-}
-else
-{
-    using var catalog = new Catalog(Console.WriteLine);
-    var sleepSort = new SleepSort(Console.WriteLine, catalog);
+var allString = new List<string>();
+using var catalog = new Catalog(Console.WriteLine);
 
-    sleepSort.Do(args);
+while (true)
+{
+    Console.Write("Enter string: ");
+    var text = Console.ReadLine();
+
+    if (string.IsNullOrWhiteSpace(text))
+    {
+        break;
+    }
+
+    allString.Add(text);
 }
+
+var sleepSort = new SleepSort(Console.WriteLine, catalog);
+
+sleepSort.Do(allString.ToArray());
 
 Console.WriteLine("Press ENTER to exit...");
 Console.ReadLine();
